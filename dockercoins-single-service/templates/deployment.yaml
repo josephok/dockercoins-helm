@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: {{ if eq .Values.servicename "rng" }} DaemonSet {{else}} Deployment {{end}}
+metadata:
+  name: {{ include "dockercoins-single-service.fullname" . }}
+  labels:
+{{ include "dockercoins-single-service.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+{{ include "dockercoins-single-service.labels" . | indent 6 }}
+  template:
+    metadata:
+      labels:
+{{ include "dockercoins-single-service.labels" . | indent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ if eq .Values.servicename "redis" }} "redis:{{ .Values.image.tag }}" {{ else }} "10.104.15.174:5000/{{.Values.servicename}}:{{ .Values.image.tag }}" {{ end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: PROJECT_NAME
+            value: "dockercoins"
+          - name: ENVIRONMENT
+            value: {{ .Release.Namespace }}
+          - name: SERVICE_NAME
+            value: {{.Values.servicename }}
+          # ports:
+          #   - name: container_port
+          #     containerPort: {{ .Values.service.targetPort }}
+          #     protocol: TCP
+          {{- if .Values.healthcheck.enabled -}}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          {{- end }}

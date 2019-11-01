@@ -1,0 +1,17 @@
+{{- if .Values.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.servicename }}
+  labels:
+{{ include "dockercoins-single-service.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ if eq .Values.servicename "redis" }} 3306 {{ else }} {{ .Values.service.port }} {{ end }}
+      targetPort: {{ if eq .Values.servicename "redis" }} 3306 {{ else }} {{ .Values.service.targetPort }} {{ end }}
+      protocol: TCP
+      name: service-port
+  selector:
+    servicename: {{ .Values.servicename }}
+{{- end }}
