@@ -25,17 +25,41 @@ spec:
             value: {{ .Release.Namespace }}
           - name: SERVICE_NAME
             value: {{.Values.servicename }}
-          # ports:
-          #   - name: container_port
-          #     containerPort: {{ .Values.service.targetPort }}
-          #     protocol: TCP
           {{- if .Values.healthcheck.enabled -}}
+          {{ if eq .Values.servicename "worker" }}
+          livenessProbe:
+            exec:
+              command:
+              - ps
+              - aux | grep python | grep -v grep
+          readinessProbe:
+            exec:
+              command:
+              - ps
+              - aux | grep python | grep -v grep
+          {{ else if eq .Values.servicename "redis" }}
+          livenessProbe:
+            exec:
+              command:
+              - redis-cli
+              - ping
+            initialDelaySeconds: 5
+          readinessProbe:
+            exec:
+              command:
+              - redis-cli
+              - ping
+            initialDelaySeconds: 5
+          {{ else }}
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: 80
+            initialDelaySeconds: 10
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: 80
+            initialDelaySeconds: 10
+          {{- end }}
           {{- end }}
