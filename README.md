@@ -5,7 +5,7 @@ kubectl create namespace uat
 kubectl create namespace prod
 ```
 
-### Create a single service:
+### Create a single service in `dev` and `uat` namespace:
 
 #### In dev namespace:
 1. Deploy worker:
@@ -106,4 +106,20 @@ helm install ./dockercoins-single-service \
 --set image.tag=0.1 \
 --set ingress.enabled=true \
 --set healthcheck.enabled=true
+```
+
+### Create all services in `prod` namespace:
+1. Deploy redis in master node:
+
+```bash
+apt get install redis
+```
+And change bind address to your public interface ip, mine is `192.168.56.6`
+
+2. Deploy services in `prod` namespace:
+
+```bash
+helm install ./dockercoins-all-service \
+--name dockercoins \
+--namespace=prod
 ```

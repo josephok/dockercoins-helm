@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hasher
+  labels:
+    servicename: hasher
+{{ include "dockercoins-all-service.labels" . | indent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: service-port
+  selector:
+    servicename: hasher

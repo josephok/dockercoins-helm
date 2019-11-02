@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: rng
+  labels:
+    servicename: rng
+{{ include "dockercoins-all-service.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      servicename: rng
+{{ include "dockercoins-all-service.labels" . | indent 6 }}
+  template:
+    metadata:
+      labels:
+        servicename: rng
+{{ include "dockercoins-all-service.labels" . | indent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: 10.104.15.174:5000/rng:0.1
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: PROJECT_NAME
+            value: "dockercoins"
+          - name: ENVIRONMENT
+            value: {{ .Release.Namespace }}
+          - name: SERVICE_NAME
+            value: rng
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10

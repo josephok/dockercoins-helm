@@ -35,11 +35,6 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "dockercoins-all-service.labels" -}}
-app.kubernetes.io/name: {{ include "dockercoins-all-service.name" . }}
-helm.sh/chart: {{ include "dockercoins-all-service.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+projectname: dockercoins
+environment: {{ .Release.Namespace }}
 {{- end -}}
