@@ -8,8 +8,8 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ if eq .Values.servicename "redis" }} 3306 {{ else }} {{ .Values.service.port }} {{ end }}
-      targetPort: {{ if eq .Values.servicename "redis" }} 3306 {{ else }} {{ .Values.service.targetPort }} {{ end }}
+    - port: {{ if eq .Values.servicename "redis" }} 6379 {{ else }} {{ .Values.service.port }} {{ end }}
+      targetPort: {{ if eq .Values.servicename "redis" }} 6379 {{ else }} {{ .Values.service.targetPort }} {{ end }}
       protocol: TCP
       name: service-port
   selector:
