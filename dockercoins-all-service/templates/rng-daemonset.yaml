@@ -18,7 +18,7 @@ spec:
 {{ include "dockercoins-all-service.labels" . | indent 8 }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: rng
           image: 10.104.15.174:5000/rng:0.1
           imagePullPolicy: IfNotPresent
           env:

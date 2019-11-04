@@ -15,7 +15,7 @@ spec:
 {{ include "dockercoins-single-service.labels" . | indent 8 }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Values.servicename }}
           image: {{ if eq .Values.servicename "redis" }} "redis:{{ .Values.image.tag }}" {{ else }} "10.104.15.174:5000/{{.Values.servicename}}:{{ .Values.image.tag }}" {{ end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
