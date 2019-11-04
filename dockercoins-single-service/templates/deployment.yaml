@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.servicename }}
-          image: {{ if eq .Values.servicename "redis" }} "redis:{{ .Values.image.tag }}" {{ else }} "10.104.15.174:5000/{{.Values.servicename}}:{{ .Values.image.tag }}" {{ end }}
+          image: {{ if eq .Values.servicename "redis" }} "redis:{{ .Values.image.tag }}" {{ else }} "{{ .Values.image.registry }}/{{.Values.servicename}}:{{ .Values.image.tag }}" {{ end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: PROJECT_NAME

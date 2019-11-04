@@ -6,6 +6,7 @@ replicaCount: 1
 servicename: worker
 
 image:
+  registry: 10.104.15.174:5000
   tag: 0.1
   pullPolicy: IfNotPresent
 

@@ -4,5 +4,8 @@
 
 replicaCount: 1
 
+image:
+  registry: 10.104.15.174:5000
+
 ingress:
   enabled: false

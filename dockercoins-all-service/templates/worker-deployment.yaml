@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: 10.104.15.174:5000/worker:0.1
+          image: {{ .Values.image.registry }}/worker:0.1
           imagePullPolicy: IfNotPresent
           env:
           - name: PROJECT_NAME
